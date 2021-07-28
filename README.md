@@ -1,34 +1,134 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# hola papu
 
-## Getting Started
+acá un nuevo archivo readme de notas
+pero en este caso seran sobre next js
+asi que comencemos
 
-First, run the development server:
+## conexion de nuevos componentes al servidor automatica (?) *c sonroja*
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+WTF weon esto parece puta magia
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+simplemente creando un componente en pages se crea una nueva extencion con el nombre que tenga el archivo
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## no `<a>` sino `<Link>`
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+para crear enlaces locales se tendra que hacer con el componente `<Link>` que tiene next js
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+        import Link from "next/link"
 
-## Learn More
+y listo se puede usar como si fuera la etiqueta `<a>`
 
-To learn more about Next.js, take a look at the following resources:
+        <a href="/otra-pagina">Ir a la otra pagina</a>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## variables de entorno
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+habrán veces en las cuales usaremos el mismo texto, pero eso significa que estamos haciendo algo mal
 
-## Deploy on Vercel
+en este caso podemos poner de ejemplo los titulos de las paginas
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+        <title>Home | nombre del sitio</title>
+        <title>About | nombre del sitio</title>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+para guardar el texto "nombre del sitio" como variable lo tendremos que poner en un archivo externo llamado "next.config.js"
+
+        module.exports = {
+                env: {
+                        SITIO_NOMBRE: "nombre del sitio"
+                }
+        }
+
+- lo que hacemos es que module.exports sea igual a un objeto donde pondremos las constantes
+- y las variables tienen que ser escritas en mayusculas podas imponentes B)
+
+despues de eso para usarlas se hace asi
+
+        <title>Seccion | {process.env.NOMBRE_DEL_SITIO}</title>
+
+- aca decimos que en el script que inserte la variable NOMBRE_DEL_SITIO de el objeto env que esta en el objeto process.
+
+## uso de variables para conexiones a APIs
+
+esto es un poco mas complicado de explicar, ya que se me hace un poco dificil los servidores, pero voy a explicarlo como lo entiendo por ahora
+
+se sabe que tus conexiones a las base de datos cuando estes trabajando en paralelo con otras personas en backend, no seran posibles porque aun no estan terminadas
+
+asi que tendras que tener variables condicionales a el estado del proyecto
+
+ya sea si esta en desarrollo o este ya en produccion
+
+nextjs nos ayuda en eso dandonos constantes que detectan en que estado estas y que este cambio de conexiones sea auntomatico
+
+para eso lo primero es exportar en nuestro archivo next.config.js las constantes de next
+
+y guardarlas en las que necesitemos en una constante, o simplemente desestructutarlo como en el siguiente ejemplo
+
+        const { PHASE_DEVELOPMENT_SERVER } = require("next/constants")
+
+- NOTA para ver el contenido de una redireccion podemos seleccionarla y presionar F12
+- si hacemos eso con la redireccion del require nos llevara a las constantes
+
+ahora, te recuerdas de los estados que puede tener un proyecto, pues eso se llama fase como la fase del proyecto
+
+pero obvia mente tiene que ser escrita en ingles, o sea PHASE
+
+y esta fase se guardara en un valor llamado phase que lo usaremos en el module.exports de antes
+
+pero module.exports no es una funcion para que use propiedades
+
+pues conviertela en una
+
+        module.exports = phase => {
+
+        }
+
+y ya esta
+
+ahora hay que crear una vareable pero para eso se necesita a env pero en este caso ya no sera un objeto sin declaracion, sino que tendremos que declararla como constante, y la retornamos
+
+        module.exports = phase => {
+           const env = {
+            }
+
+            return {
+                env
+            }
+        }
+
+ok ahora hay que usar la constante PHASE_DEVELOPMENT_SERVER para saber si esta en desarrollo o no
+
+para ello hacemos una constante que almacene un booleano que tenga el resultado de la comparacion de PHASE_DEVELOPMENT_SERVER con la propiedad phase
+
+        module.exports = phase => {
+           const faseDeDesarrollo = phase === PHASE_DEVELOPMENT_SERVER
+           const env = {
+            }
+
+            return {
+                env
+            }
+        }
+
+pero para que hicimos eso, pues para usarlo como condicional
+si es true significa que esta en fase de desarrollo, si no entonces esta en ela case real
+
+pues ahora a crear la vareable esta la va almacenar env como si fuera un json y la variable tiene que almacenar una doble funcion ()(), en la cual el primer par de parentesis almacenara la funcion condicional
+
+        module.exports = phase => {
+           const faseDeDesarrollo = phase === PHASE_DEVELOPMENT_SERVER
+           const env = {
+                VARIABLE_API: ( () => {
+                    if (faseDeDesarrollo) {
+                        return "https://api.com/dev"
+                    } else {
+                        return "https://api.com/final"
+                    }
+                })()
+            }
+
+            return {
+                env
+            }
+        }
+
+- si queremos agregar una variable comun como la SITIO_NOMBRE lo puedes poner normal y claro, siempre separando cada variable con una coma ","
+
