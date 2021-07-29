@@ -135,3 +135,84 @@ pues ahora a crear la vareable esta la va almacenar env como si fuera un json y 
 ## componentes next
 
 next funciona como magia pero para eso tenemos que regirnos a sus reglas, pero si saber React, son las mismas, excepto por las etiquetas especiales como `<Link>` o `<Image>`
+
+## _app.js
+
+_app.js es un archivo especial en el cual iran los elementos basicos de cada seccion de tu pagina web
+
+entre estos se puede encontrar tu nav o header
+
+su estructura es asi
+
+        function MyApp({ Component, pageProps }) {
+          return(
+            <>
+                <Component {...pageProps} />
+            </>
+          ) 
+        }
+
+aca puedes excribir toda la estructura que tu quieras
+pero una parte importante es
+
+        <Component {...pageProps} />
+
+ya que este determinadonde comenzara el contenido original de la pagina y no los componentes genericos
+
+## _document.js
+
+es como _app pero es para los detalles del head
+
+su estructura basica es asi
+
+        import Document, {Html, Head, Main, NextScript} from "next/document"
+
+        class MyDocument extends Document {
+          render() {
+            return (
+              <Html lang="es">
+                <Head>
+                  <body>
+                    <Main />
+                    <NextScript />
+                  </body>
+                </Head>
+              </Html>
+            )
+          }
+        }
+
+        export default MyDocument
+
+- exportamos unos componentes de next/document para estructurar esto, despues creamos una clase que renderizara el head
+
+## async / await
+
+PRIMERA VEZ USANDO ESTA WEA
+
+parece ser importante, ya que he escuchado mucho de ellas
+
+en este caso se usara para _document.js que necesita una peticion asincrona (async) que le de elementos del servidor
+
+asincrona significa que no esta sincronizado a la ejecucion del codigo
+
+con esto se pueden hacer peticiones que que esperen (await) que cargen lo que necesita
+
+
+        static async getInitialProps(ctx) {
+          const initialProps = await Document.getInitialProps(ctx)
+          return {...initialProps}
+        }
+
+- aca si no se porque se pondra static al principio
+se inicia con un async que usara el metodo getInitialProps() que recibira un contexto
+
+el cual hara una funcion de recoleccion de datos para la constante initialProps
+
+se va a esperar que cargen los datos que cargen en Document.getInitialProps()
+
+y despues lo mandamos como retorno a esa constante
+
+- aca hay un video que me gusto como lo explica --> https://www.youtube.com/watch?v=rKK1q7nFt7M
+
+- esos 3 puntos creo que se ponen cuando son muchas constantes
