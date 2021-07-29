@@ -186,6 +186,16 @@ su estructura basica es asi
 
 - exportamos unos componentes de next/document para estructurar esto, despues creamos una clase que renderizara el head
 
+## NOTAS antes de continuar
+
+ahora veremos bastantes funciones async o asincronas de peticiones de datos
+
+he estado leyendo la documentacion de next js y parece ser que cualquiera de sus funciones async se agregan despues de la construccion de su componente
+
+el primero que veremos es getInitialProps
+
+este va a hacer peticiones fetch que retornara datos para el componente
+
 ## async / await
 
 PRIMERA VEZ USANDO ESTA WEA
@@ -204,8 +214,9 @@ con esto se pueden hacer peticiones que que esperen (await) que cargen lo que ne
           return {...initialProps}
         }
 
-- aca si no se porque se pondra static al principio
-se inicia con un async que usara el metodo getInitialProps() que recibira un contexto
+- primero declaramos te tipo de componente es y en este caso es estatico static
+
+despues se inicia con un async que usara el metodo getInitialProps() que recibira un contexto
 
 el cual hara una funcion de recoleccion de datos para la constante initialProps
 
@@ -216,3 +227,109 @@ y despues lo mandamos como retorno a esa constante
 - aca hay un video que me gusto como lo explica --> https://www.youtube.com/watch?v=rKK1q7nFt7M
 
 - esos 3 puntos creo que se ponen cuando son muchas constantes
+
+## getInitialProps() a detalle
+
+getInitialProps recibe un argumento llamado contexto (ctx) el cual retornara un json con todos los datos
+
+con esto podemos recorrer con un .map() y jugar con los componentes de cada onjeto del json
+
+este es un metodo del coponente asi que cuando se ejecuta tienes que poner primero el nombre del componente seguido de un punto
+
+        Componente.getInitialProps = async function (context) {
+
+          const res = await fetch(url)
+          const post = await res.json()
+
+          return {
+            post
+          }
+        }
+
+aqui decimos que el metodo getInitialProps va a ser async y que recibira la propiedad context
+
+pedimos un contenido por un fetch y lo volvemos json
+
+despues devolvemos ese json
+
+pero que tal si queremos que esto sea mas dinamico y jugar con datos por id pues seria algo asi
+
+        Componente.getInitialProps = async function (context) {
+
+          const { id } = context.query
+          const res = await fetch(`${url}/${id}`)
+          const post = await res.json()
+
+          return {
+            post
+          }
+        }
+
+context tiene muchas propiedades para su lectura, en este caso usamos query para leerlo como objeto, y le pedimos que nos saque el id
+
+despues podemos usar la id para que busque el objeto en si con la url en conjunto de la id como identificador unico
+
+no siempre sera asi, tienes que saber como se hacen las peticiones por id a la API que quieras, puede que tenga una extencion antes del id
+
+## getStaticProps() al detalle
+
+es una funcion que tiene una forma particular de ejecucion
+
+se escribe despues de la declaracion del componente y se declara asi
+
+        export async function getStaticProps() {}
+
+podemos decir que vamos a exportar una funcion async que sera getStaticProps()
+
+esta funcion se ejecutara cuando se compila y le permite pasar los datos obtenidos a una propiedad llamada {props} para el componente
+
+y como obtiene datos tambien usara fetch
+
+        export async function getStaticProps() {
+          const res = await fetch('https://.../posts')
+          const posts = await res.json()
+
+          return {
+            props: {
+              posts,
+            },
+          }
+        }
+
+en este caso estamos trayendo datos de posts y los guardamos en una constante
+
+despues retornamos el objeto posts del objeto props que dijimos que seria el que reciviria todo
+
+y ahora tenemos un json con datos que podemos usar en recorridos .map() y asi crear componente dinamicos
+
+## crear componente para datos dinamicos
+
+antes de continuar estaria bueno decir que next funciona renderizando todos los componentes de la carpeta pages en paginas html, y cuando creamos una carpeta estamos creando una extencion de ella
+
+es decir que los archivos que esten en la carpeta pages su direccion sera asi
+
+        localhost:3000/nombre-del-archivo
+
+y cuando esta el archivo dentro de otra carpeta que esta en pages sera asi
+
+        localhost:3000/nombre-de-carpeta/nombre-del-archivo
+
+parece magia papus
+
+y para que sirve saber esto, pues se pueden crear componentes dinamicos poniendo entre corchetes[] el dato dinamico
+
+por ejemplo 
+
+        [id].js
+
+te recuerdas de getInitialProps(), pues es el que necesita este componente para que identifique la id del componente a elaborar con
+
+        const { id } = context.query
+
+como ejemplo practico en este caso se uso jsonplaceholder que es una api fake o de prueba, que tiene elementos en formato json
+
+y la use para renderizar posts fakes puse la url en next.config.js y una extencion
+
+        (`${process.env.API_BLOG}posts/${id}`)
+
+y se nos vincula mediante nuestras vareables de entorno y la id que sacamos con el context.query
