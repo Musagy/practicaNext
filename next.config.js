@@ -9,7 +9,7 @@ module.exports = phase => {
     SITE_NAME: "Diego's Blog",
     API_BLOG: (()=>{
       if (isDevelopment) {
-        return "ed"
+        return "ed.team"
       } else {
         return ""
       }
