@@ -132,3 +132,6 @@ pues ahora a crear la vareable esta la va almacenar env como si fuera un json y 
 
 - si queremos agregar una variable comun como la SITIO_NOMBRE lo puedes poner normal y claro, siempre separando cada variable con una coma ","
 
+## componentes next
+
+next funciona como magia pero para eso tenemos que regirnos a sus reglas, pero si saber React, son las mismas, excepto por las etiquetas especiales como `<Link>` o `<Image>`
