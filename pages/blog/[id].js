@@ -1,20 +1,22 @@
 import Head from "next/dist/next-server/lib/head"
 import Link from "next/dist/client/link"
 import fetch from "node-fetch"
+import Comments from "../../components/blog/Comments"
 
 const PostForId = ({ post }) => (
-  <div /*className={styles.container}*/>
+  <div className="ed-grid">
     <Head>
       <title>{post.title} | {process.env.SITE_NAME}</title>
     </Head>
     <main>
       <div>
         <h1>{post.title}</h1>
+        <span>{`escrito por el usuario de ID ${post.userId}`}</span>
+        <br /><br />
         <p>{post.body}</p>
-        <span>{`escrito por el usuario ${post.userId}`}</span>
-        <br />
         <Link href={`/`}><a>volver</a></Link>
       </div>
+      <Comments id={post.id} />
     </main>
   </div>
 )

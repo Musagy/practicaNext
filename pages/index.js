@@ -14,15 +14,9 @@ const Home = ({ posts}) => {
       </Head>
       <main>
         <h1>
-        Hola Papus
+          Diego&apos;s blog
         </h1>
-        <span>¿Como estas?</span><br/>
-        <span>{process.env.API_BLOG}</span>
-        <br/>
-        <br/>
-        <Link href="/about"> Ir a segunda... </Link>
-        <br /><br />
-        <div>
+        <div className="ed-grid m-grid-3 row-gap">
           {
             posts.map(p => <Post key={p.id} post={p} />)
           }

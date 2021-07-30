@@ -333,3 +333,8 @@ y la use para renderizar posts fakes puse la url en next.config.js y una extenci
         (`${process.env.API_BLOG}posts/${id}`)
 
 y se nos vincula mediante nuestras vareables de entorno y la id que sacamos con el context.query
+
+## carpeta public
+
+es una carpeta que estara directamente conectada con pages en la cual se pondran todos los archivos estaticos, como imagenes, videos, archivos, SVGs, etc.
+
