@@ -12,7 +12,7 @@ const Comments = ({ id }) => {
           setComments(resp.data)
         })
     }
-  }, [number])
+  }, [number,id])
 
   if(!comments) return(
     <div>
@@ -20,7 +20,22 @@ const Comments = ({ id }) => {
     </div>
   )
 
-  return <span> {JSON.stringify(comments)} </span>
+  return (
+    <div>
+      <h2>Comentarios</h2><br />
+      {
+        comments.map(c => (
+          <div key={c.id}>
+            <h3>{c.email}</h3>
+            <span><b>Comentario de:</b> {c.name}</span>
+            <br /><br />
+            <p>{c.body}</p>
+            <br /><br />
+          </div>
+        ))
+      }
+    </div>
+  )
 
 }
 

@@ -11,8 +11,7 @@ const HeaderMain = () => (
           <a className="s-mr-1 s-mb-0 s-cross-center s-main-center">
             {/* <img src="https://ed.team/static/images/logo/isotipo-color.svg" alt="logo" width={50} className="main-logo" /> */}
             <Image
-              src='/vercel.svg' alt="logo" width="40"
-              height="40" />
+              src="https://ed.team/static/images/logo/isotipo-color.svg" alt="logo" width={50} height={50} />
           </a>
         </Link>
       </div>

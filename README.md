@@ -338,3 +338,92 @@ y se nos vincula mediante nuestras vareables de entorno y la id que sacamos con 
 
 es una carpeta que estara directamente conectada con pages en la cual se pondran todos los archivos estaticos, como imagenes, videos, archivos, SVGs, etc.
 
+## createRef
+
+createRef es para determinar el estados de una etiqueta y poder cambiar sus propiedades conm funciones
+
+es decir que puedo podemos generar como in identificador para que pueda ser manipulado con funciones
+
+por ejemplo podemos hacer que un cuadrado se se vuelva de otro color cuando presionamos un boton o incluso el mismo componente
+
+### primero exportamos la funcion createRef desde react
+
+        import React, {createRed} from "react"
+        
+### despues hacemos una constante que almacenara el identificador para el ref
+
+        const cuadrado = createRef()
+
+### ahora haremos la funcion que ejecutara cuando sea presionado
+
+        const swithColor = () =>{
+          cuadrado.current.classList.toggle("color-red")
+        }
+
+- acá estamos agarrando la propiedad current que sera su estado actual despues vamos a sus clases y le damos un toggle que seria como una propiedad para quitar y poner
+y le decimos que ponga la clase "color-red" la cual en un css externo le dara el background-color:red;
+
+### ahora dentro del componente escribiremos nuestro elemento
+
+        <div
+          className="cuadrado"
+          ref="cuadrado"
+          onClick ( () => switchColor() )
+        />
+
+- y por ultimo en las propiedades del elemento estata el ref con el createRef que hicimos
+
+- aparte de eso el elemento que ejecutara la funcion tiene que tener un detector de eventos, en este caso un onClick
+
+- en este caso se pone el onClick en el propio cuadrado ya que este sera el que lo active
+
+- puede ser otro elemento sin problema como aca
+
+        <div
+          className="cuadrado"
+          ref="cuadrado"
+        />
+        <buttom onClick ( () => switchColor() )>
+          cambiar color
+        </buttom>
+
+## next seo
+
+el seo
+
+el seo
+
+el puto seo
+
+bueno, que es el seo.
+
+pues es esa wea que catagoriza tu pagina web si es buena o es mala
+
+si no te preocupas por ella, pues literal google le da shadowban y nadie podra verlo
+
+asi que es importante
+
+se instala la libreria con
+
+        yarn add next-seo
+
+y se enfoca en los metadatos
+
+y para comenzar a usarla tienes que esportarla con
+
+        import { NextSeo } from 'next-seo'
+
+despues tus elementos Head tienes que cambiarlos a NextSeo
+
+esta sera una etiqueta sin una parte con cierre, solo ca a ser una
+
+y en ella de declararan propiedades para agregarlas en el head
+
+por el ejemplo tittle o description
+
+pero tambien hay mas avanzadas que contendran objetos llenos de mas datos, como el open graph
+
+hay un ejemplo practico en index
+
+y para mas conocimientos de esto, esta la documentacion de npm --> https://www.npmjs.com/package/next-seo
+

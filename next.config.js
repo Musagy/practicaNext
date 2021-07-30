@@ -7,11 +7,12 @@ module.exports = phase => {
   }
   const env = {
     SITE_NAME: "Diego's Blog",
+    SITE_URL: "https://mc.diego",
     API_BLOG: (()=>{
       if (isDevelopment) {
         return "https://jsonplaceholder.typicode.com/"
       } else {
-        return ""
+        return "https://jsonplaceholder.typicode.com/"
       }
     })()
   }
